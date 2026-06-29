@@ -1,0 +1,43 @@
+{
+  "name": "queryward",
+  "version": "0.0.0",
+  "description": "Catch N+1 queries in your tests, before they hit production. ORM-agnostic.",
+  "type": "module",
+  "license": "MIT",
+  "author": "Yeongjun Yoo",
+  "keywords": [
+    "n+1",
+    "orm",
+    "prisma",
+    "drizzle",
+    "testing",
+    "query",
+    "performance",
+    "vitest",
+    "jest"
+  ],
+  "exports": {
+    ".": "./src/index.ts",
+    "./drizzle": "./src/adapters/drizzle.ts",
+    "./prisma": "./src/adapters/prisma.ts",
+    "./vitest": "./src/matchers/vitest.ts"
+  },
+  "scripts": {
+    "test": "vitest run",
+    "dev": "vitest",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "typescript": "^5.7.0",
+    "vitest": "^2.1.8"
+  },
+  "peerDependencies": {
+    "@prisma/client": "*",
+    "drizzle-orm": "*"
+  },
+  "peerDependenciesMeta": {
+    "@prisma/client": { "optional": true },
+    "drizzle-orm": { "optional": true }
+  }
+}
