@@ -4,3 +4,4 @@ coverage/
 .queryward/
 *.log
 .DS_Store
+*.tgz

@@ -1,6 +1,6 @@
 {
   "name": "queryward",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Catch N+1 queries in your tests, before they hit production. ORM-agnostic.",
   "type": "module",
   "license": "MIT",
@@ -16,31 +16,74 @@
     "vitest",
     "jest"
   ],
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "exports": {
-    ".": "./src/index.ts",
-    "./drizzle": "./src/adapters/drizzle.ts",
-    "./prisma": "./src/adapters/prisma.ts",
-    "./vitest": "./src/matchers/vitest.ts"
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./drizzle": {
+      "types": "./dist/adapters/drizzle.d.ts",
+      "import": "./dist/adapters/drizzle.js",
+      "require": "./dist/adapters/drizzle.cjs"
+    },
+    "./prisma": {
+      "types": "./dist/adapters/prisma.d.ts",
+      "import": "./dist/adapters/prisma.js",
+      "require": "./dist/adapters/prisma.cjs"
+    },
+    "./vitest": {
+      "types": "./dist/matchers/vitest.d.ts",
+      "import": "./dist/matchers/vitest.js",
+      "require": "./dist/matchers/vitest.cjs"
+    },
+    "./package.json": "./package.json"
   },
   "bin": {
     "queryward": "./dist/cli.js"
   },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "sideEffects": [
+    "./dist/matchers/vitest.js",
+    "./dist/matchers/vitest.cjs"
+  ],
   "scripts": {
+    "build": "tsup",
     "test": "vitest run",
     "dev": "vitest",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "prepublishOnly": "npm run build"
   },
   "devDependencies": {
     "@types/node": "^22.10.0",
+    "tsup": "^8.5.1",
     "typescript": "^5.7.0",
     "vitest": "^2.1.8"
   },
   "peerDependencies": {
     "@prisma/client": "*",
-    "drizzle-orm": "*"
+    "drizzle-orm": "*",
+    "vitest": ">=1"
   },
   "peerDependenciesMeta": {
-    "@prisma/client": { "optional": true },
-    "drizzle-orm": { "optional": true }
+    "@prisma/client": {
+      "optional": true
+    },
+    "drizzle-orm": {
+      "optional": true
+    },
+    "vitest": {
+      "optional": true
+    }
   }
 }

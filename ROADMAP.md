@@ -15,7 +15,8 @@ Target: 2026 오픈소스 개발자대회 출품 (2026-08-27). 설계 출처는 
 - [x] CI budget mode: `queryward snapshot` / `queryward check` (.queryward/budgets.json)
 - [ ] Whitelist / ignore rules
 - [x] Human-readable diagnostics with call-site + fix hint (include/with)
-- [ ] Build pipeline (tsup -> dist), wire `exports` to dist, publish 0.1.0
+- [x] Build pipeline (tsup -> dist), exports + bin wired to dist, dual ESM/CJS + .d.ts
+- [ ] Publish 0.1.0 to npm (gated: 영준 + confirm no dev-period clause at OT 7.23)
 - [ ] Example app + 3-minute demo (before/after)
 
 ## Mentoring phase (2026-09-18 ~ 10-09)
