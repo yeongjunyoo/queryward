@@ -9,9 +9,20 @@ import { reconcileBudget } from "../core/budget.js";
  *
  *   await expect(() => getPosts(db)).toHaveQueryCount({ max: 2 });
  *   await expect(() => getPosts(db)).toHaveNoNPlusOne();
- *
- * TODO: ship matcher type declarations so TS recognizes these on `expect`.
+ *   await expect(() => getPosts(db)).toMatchQueryBudget({ label: "posts.list" });
  */
+interface QuerywardMatchers<R = unknown> {
+  toHaveQueryCount(opts: { max: number }): R;
+  toHaveNoNPlusOne(): R;
+  toMatchQueryBudget(opts: { label: string }): R;
+}
+
+declare module "vitest" {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  interface Assertion<T = any> extends QuerywardMatchers<Promise<void>> {}
+  interface AsymmetricMatchersContaining extends QuerywardMatchers {}
+}
+
 expect.extend({
   async toHaveQueryCount(received: () => unknown, opts: { max: number }) {
     const report = await measureQueries(received);

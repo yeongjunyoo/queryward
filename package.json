@@ -5,6 +5,14 @@
   "type": "module",
   "license": "MIT",
   "author": "Yeongjun Yoo",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yeongjunyoo/queryward.git"
+  },
+  "homepage": "https://github.com/yeongjunyoo/queryward#readme",
+  "bugs": {
+    "url": "https://github.com/yeongjunyoo/queryward/issues"
+  },
   "keywords": [
     "n+1",
     "orm",
@@ -21,26 +29,29 @@
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.js",
-      "require": "./dist/index.cjs"
+      "import": { "types": "./dist/index.d.ts", "default": "./dist/index.js" },
+      "require": { "types": "./dist/index.d.cts", "default": "./dist/index.cjs" }
     },
     "./drizzle": {
-      "types": "./dist/adapters/drizzle.d.ts",
-      "import": "./dist/adapters/drizzle.js",
-      "require": "./dist/adapters/drizzle.cjs"
+      "import": { "types": "./dist/adapters/drizzle.d.ts", "default": "./dist/adapters/drizzle.js" },
+      "require": { "types": "./dist/adapters/drizzle.d.cts", "default": "./dist/adapters/drizzle.cjs" }
     },
     "./prisma": {
-      "types": "./dist/adapters/prisma.d.ts",
-      "import": "./dist/adapters/prisma.js",
-      "require": "./dist/adapters/prisma.cjs"
+      "import": { "types": "./dist/adapters/prisma.d.ts", "default": "./dist/adapters/prisma.js" },
+      "require": { "types": "./dist/adapters/prisma.d.cts", "default": "./dist/adapters/prisma.cjs" }
     },
     "./vitest": {
-      "types": "./dist/matchers/vitest.d.ts",
-      "import": "./dist/matchers/vitest.js",
-      "require": "./dist/matchers/vitest.cjs"
+      "import": { "types": "./dist/matchers/vitest.d.ts", "default": "./dist/matchers/vitest.js" },
+      "require": { "types": "./dist/matchers/vitest.d.cts", "default": "./dist/matchers/vitest.cjs" }
     },
     "./package.json": "./package.json"
+  },
+  "typesVersions": {
+    "*": {
+      "drizzle": ["./dist/adapters/drizzle.d.ts"],
+      "prisma": ["./dist/adapters/prisma.d.ts"],
+      "vitest": ["./dist/matchers/vitest.d.ts"]
+    }
   },
   "bin": {
     "queryward": "./dist/cli.js"
