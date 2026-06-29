@@ -1,5 +1,6 @@
 import { expect } from "vitest";
 import { measureQueries } from "../index.js";
+import { formatReport } from "../core/diagnose.js";
 
 /**
  * Opt-in Vitest matchers. Import once in your test setup:
@@ -19,7 +20,10 @@ expect.extend({
       message: () =>
         pass
           ? `expected more than ${opts.max} queries, but only ${report.count} ran`
-          : `expected at most ${opts.max} queries, but ${report.count} ran`,
+          : formatReport(
+              `expected at most ${opts.max} queries, but ${report.count} ran`,
+              report,
+            ),
     };
   },
   async toHaveNoNPlusOne(received: () => unknown) {
@@ -30,7 +34,10 @@ expect.extend({
       message: () =>
         pass
           ? `expected an N+1 pattern, but found none`
-          : `detected N+1: ${report.nPlusOne[0].count}x ${report.nPlusOne[0].sample}`,
+          : formatReport(
+              `Detected N+1: ${report.nPlusOne[0].count}x the same query shape.`,
+              report,
+            ),
     };
   },
 });

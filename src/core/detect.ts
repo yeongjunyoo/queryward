@@ -1,5 +1,6 @@
 import type { NPlusOneFinding, QueryShape, RecordedQuery } from "./types.js";
 import { fingerprint } from "./fingerprint.js";
+import { extractCallSite } from "./diagnose.js";
 
 /** Group recorded queries by structural fingerprint, most frequent first. */
 export function summarizeShapes(queries: RecordedQuery[]): QueryShape[] {
@@ -8,7 +9,7 @@ export function summarizeShapes(queries: RecordedQuery[]): QueryShape[] {
     const fp = fingerprint(q.sql);
     const existing = map.get(fp);
     if (existing) existing.count++;
-    else map.set(fp, { fingerprint: fp, count: 1, sample: q.sql });
+    else map.set(fp, { fingerprint: fp, count: 1, sample: q.sql, stack: q.stack });
   }
   return [...map.values()].sort((a, b) => b.count - a.count);
 }
@@ -24,5 +25,10 @@ export function detectNPlusOne(
 ): NPlusOneFinding[] {
   return summarizeShapes(queries)
     .filter((s) => s.count >= threshold)
-    .map((s) => ({ fingerprint: s.fingerprint, count: s.count, sample: s.sample }));
+    .map((s) => ({
+      fingerprint: s.fingerprint,
+      count: s.count,
+      sample: s.sample,
+      callSite: extractCallSite(s.stack),
+    }));
 }

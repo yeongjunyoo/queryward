@@ -11,7 +11,20 @@ const storage = new AsyncLocalStorage<RecordedQuery[]>();
 export function recordQuery(sql: string, params?: unknown[]): void {
   const sink = storage.getStore();
   if (!sink) return;
-  sink.push({ sql, params });
+  sink.push({ sql, params, stack: captureStack() });
+}
+
+/**
+ * Capture the caller stack so diagnostics can point at the offending line.
+ * Only runs inside a measure scope, so the cost stays out of production paths.
+ * The limit is bumped temporarily to see past ORM internals to user code.
+ */
+function captureStack(): string | undefined {
+  const limit = Error.stackTraceLimit;
+  Error.stackTraceLimit = 30;
+  const err = new Error();
+  Error.stackTraceLimit = limit;
+  return err.stack;
 }
 
 /** Run `fn` while collecting every query adapters record inside it. */

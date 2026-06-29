@@ -1,5 +1,6 @@
 import { collect } from "./core/collector.js";
 import { detectNPlusOne, summarizeShapes } from "./core/detect.js";
+import { formatReport } from "./core/diagnose.js";
 import type { QueryReport } from "./core/types.js";
 
 export type {
@@ -11,6 +12,7 @@ export type {
 export { recordQuery, isCollecting } from "./core/collector.js";
 export { fingerprint } from "./core/fingerprint.js";
 export { summarizeShapes, detectNPlusOne } from "./core/detect.js";
+export { extractCallSite, suggestFix, formatReport } from "./core/diagnose.js";
 
 export interface MeasureOptions {
   /** N+1 detection threshold (same-shape repeats). Default 2. */
@@ -59,7 +61,7 @@ export async function assertNoNPlusOne(
   if (report.nPlusOne.length > 0) {
     const worst = report.nPlusOne[0];
     throw new QuerywardError(
-      `Detected N+1: ${worst.count}x of the same query shape.\n  ${worst.sample}`,
+      `Detected N+1: ${report.count} queries ran, ${worst.count} of them the same shape.`,
       report,
     );
   }
@@ -73,12 +75,4 @@ export class QuerywardError extends Error {
     this.name = "QuerywardError";
     this.report = report;
   }
-}
-
-function formatReport(message: string, report: QueryReport): string {
-  const lines = [message, "", `Total queries: ${report.count}`];
-  for (const s of report.shapes.slice(0, 5)) {
-    lines.push(`  ${s.count}x  ${s.sample}`);
-  }
-  return lines.join("\n");
 }
