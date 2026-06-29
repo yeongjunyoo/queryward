@@ -22,6 +22,9 @@
     "./prisma": "./src/adapters/prisma.ts",
     "./vitest": "./src/matchers/vitest.ts"
   },
+  "bin": {
+    "queryward": "./dist/cli.js"
+  },
   "scripts": {
     "test": "vitest run",
     "dev": "vitest",

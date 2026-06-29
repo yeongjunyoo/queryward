@@ -1,6 +1,7 @@
 import { expect } from "vitest";
 import { measureQueries } from "../index.js";
 import { formatReport } from "../core/diagnose.js";
+import { reconcileBudget } from "../core/budget.js";
 
 /**
  * Opt-in Vitest matchers. Import once in your test setup:
@@ -38,6 +39,20 @@ expect.extend({
               `Detected N+1: ${report.nPlusOne[0].count}x the same query shape.`,
               report,
             ),
+    };
+  },
+  async toMatchQueryBudget(received: () => unknown, opts: { label: string }) {
+    const report = await measureQueries(received);
+    const result = reconcileBudget(opts.label, report.count);
+    return {
+      pass: !result.exceeded,
+      message: () =>
+        result.exceeded
+          ? formatReport(
+              `Query budget exceeded for "${opts.label}": ${result.count} ran, baseline ${result.baseline}.`,
+              report,
+            )
+          : `expected "${opts.label}" to exceed its budget of ${result.baseline}, but ${result.count} ran`,
     };
   },
 });

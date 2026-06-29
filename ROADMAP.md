@@ -12,7 +12,7 @@ Target: 2026 오픈소스 개발자대회 출품 (2026-08-27). 설계 출처는 
 - [x] Prisma adapter (`$on('query')`)
 - [x] Vitest matchers (`toHaveQueryCount`, `toHaveNoNPlusOne`)
 - [ ] Jest matchers (share `expect.extend` impl)
-- [ ] CI budget mode: `queryward snapshot` / `queryward check` (.queryward/budgets.json)
+- [x] CI budget mode: `queryward snapshot` / `queryward check` (.queryward/budgets.json)
 - [ ] Whitelist / ignore rules
 - [x] Human-readable diagnostics with call-site + fix hint (include/with)
 - [ ] Build pipeline (tsup -> dist), wire `exports` to dist, publish 0.1.0
